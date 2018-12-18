@@ -1,6 +1,5 @@
 package com.dmcbig.mediapicker.adapter;
 
-
 import android.content.Context;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
@@ -74,6 +73,13 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         }
     }
 
+    class CameraHolder extends MyViewHolder {
+        public CameraHolder(View itemView) {
+            super(itemView);
+            itemView.setLayoutParams(new ViewGroup.LayoutParams(size, size));
+        }
+    }
+
     int getItemWidth() {
         return (ScreenUtils.getScreenWidth(context) / PickerConfig.GridSpanCount) - PickerConfig.GridSpanCount;
     }
@@ -91,6 +97,12 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
         if (holder instanceof CameraHolder) {
+            ((CameraHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onAlbumSelectListener.onCamera();
+                }
+            });
             return;
         }
 
@@ -129,10 +141,9 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
                         holder.mask_view.setVisibility(isSelect >= 0 ? View.INVISIBLE : View.VISIBLE);
                         holder.check_image.setImageDrawable(isSelect >= 0 ? ContextCompat.getDrawable(context, R.drawable.btn_unselected) : ContextCompat.getDrawable(context, R.drawable.btn_selected));
                         setSelectMedias(media);
-                        mOnItemClickListener.onItemClick(v, media, selectMedias);
+                        onAlbumSelectListener.onItemClick(v, media, selectMedias);
                     }
                 }
-
             }
         });
     }
@@ -178,12 +189,6 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         notifyDataSetChanged();
     }
 
-    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
-
-    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
-        this.mOnItemClickListener = listener;
-    }
-
     public ArrayList<Media> getSelectMedias() {
         return selectMedias;
     }
@@ -212,21 +217,6 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
 
     public void setOnAlbumSelectListener(OnRecyclerViewItemClickListener onAlbumSelectListener) {
         this.onAlbumSelectListener = onAlbumSelectListener;
-    }
-
-    class CameraHolder extends MyViewHolder {
-        public CameraHolder(View itemView) {
-            super(itemView);
-            itemView.setLayoutParams(new ViewGroup.LayoutParams(size, size));
-            if (onAlbumSelectListener != null) {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onAlbumSelectListener.onCamera();
-                    }
-                });
-            }
-        }
     }
 
     public interface OnRecyclerViewItemClickListener {

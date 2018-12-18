@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by dmcBig on 2017/11/14.
@@ -57,9 +58,15 @@ public class TakePhotoActivity extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         ArrayList<Media> medias = new ArrayList<>();
-        if (requestCode == 100 || requestCode == 101 && resultCode == RESULT_OK&&mTmpFile.length() > 0) {
+        if (requestCode == 100 || requestCode == 101 && resultCode == RESULT_OK && mTmpFile.length() > 0) {
             Media media = new Media(mTmpFile.getPath(), mTmpFile.getName(), 0, 1, mTmpFile.length(), 0, "");
             medias.add(media);
+
+            // 通知系統添加照片
+            Uri localUri = Uri.fromFile(mTmpFile);
+            Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, localUri);
+            sendBroadcast(localIntent);
+
         }
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(PickerConfig.EXTRA_RESULT, medias);
@@ -69,14 +76,13 @@ public class TakePhotoActivity extends Activity {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA).format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+        return File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-        return image;
     }
 }

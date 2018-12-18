@@ -9,10 +9,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -44,6 +44,9 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class PickerActivity extends Activity implements DataCallback, View.OnClickListener,
         MyMediaGridAdapter.OnRecyclerViewItemClickListener {
 
+    public static final String TAG = "PickerActivity";
+    ArrayList<Media> medias;
+    ArrayList<Media> selects;
     Intent argsIntent;
     RecyclerView recyclerView;
     Button done, category_btn, preview;
@@ -91,11 +94,11 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         recyclerView.setHasFixedSize(true);
         //创建并设置Adapter
-        ArrayList<Media> medias = new ArrayList<>();
-        ArrayList<Media> select = argsIntent.getParcelableArrayListExtra(PickerConfig.DEFAULT_SELECTED_LIST);
+        medias = new ArrayList<>();
+        selects = argsIntent.getParcelableArrayListExtra(PickerConfig.DEFAULT_SELECTED_LIST);
         int maxSelect = argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
         long maxSize = argsIntent.getLongExtra(PickerConfig.MAX_SELECT_SIZE, PickerConfig.DEFAULT_SELECTED_MAX_SIZE);
-        gridAdapter = new MyMediaGridAdapter(medias, this, select, maxSelect, maxSize);
+        gridAdapter = new MyMediaGridAdapter(medias, this, selects, maxSelect, maxSize);
         gridAdapter.setShowCamera(true);
         recyclerView.setAdapter(gridAdapter);
     }
@@ -144,19 +147,10 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
     }
 
     void setView(ArrayList<Folder> list) {
-        gridAdapter.updateAdapter(list.get(0).getMedias());
+        medias = list.get(0).getMedias();
+        gridAdapter.updateAdapter(medias);
         setButtonText();
-        gridAdapter.setOnItemClickListener(new MyMediaGridAdapter.OnRecyclerViewItemClickListener() {
-            @Override
-            public void onCamera() {
-
-            }
-
-            @Override
-            public void onItemClick(View view, Media data, ArrayList<Media> selectMedias) {
-                setButtonText();
-            }
-        });
+        gridAdapter.setOnAlbumSelectListener(this);
     }
 
     void setButtonText() {
@@ -191,9 +185,9 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
         }
     }
 
-    public void done(ArrayList<Media> selects) {
+    public void done(ArrayList<Media> selectList) {
         Intent intent = new Intent();
-        intent.putParcelableArrayListExtra(PickerConfig.EXTRA_RESULT, selects);
+        intent.putParcelableArrayListExtra(PickerConfig.EXTRA_RESULT, selectList);
         setResult(PickerConfig.RESULT_CODE, intent);
         finish();
     }
@@ -226,23 +220,33 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 200) {
-            ArrayList<Media> selects = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
-            if (resultCode == PickerConfig.RESULT_UPDATE_CODE) {
-                gridAdapter.updateSelectAdapter(selects);
-                setButtonText();
-            } else if (resultCode == PickerConfig.RESULT_CODE) {
-                done(selects);
-            }
+            final ArrayList<Media> select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    medias.addAll(select);
+                    gridAdapter.updateAdapter(medias);
+                    if (null == selects ) {
+                        selects = new ArrayList<>();
+                    }
+                    selects.addAll(select);
+                    gridAdapter.updateSelectAdapter(selects);
+                    setButtonText();
+                }
+            });
+
         }
     }
 
     @Override
     public void onCamera() {
-
+        Log.i(TAG, "onCamera: onCamera");
+        Intent intent = new Intent(PickerActivity.this, TakePhotoActivity.class);
+        PickerActivity.this.startActivityForResult(intent, 200);
     }
 
     @Override
     public void onItemClick(View view, Media data, ArrayList<Media> selectMedias) {
-
+        setButtonText();
     }
 }
