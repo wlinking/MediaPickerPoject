@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dmcbig.mediapicker.adapter.FolderAdapter;
-import com.dmcbig.mediapicker.adapter.MediaGridAdapter;
+import com.dmcbig.mediapicker.adapter.MyMediaGridAdapter;
 import com.dmcbig.mediapicker.adapter.SpacingDecoration;
 import com.dmcbig.mediapicker.data.DataCallback;
 import com.dmcbig.mediapicker.data.ImageLoader;
@@ -41,12 +41,13 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Created by dmcBig on 2017/6/9.
  */
 
-public class PickerActivity extends Activity implements DataCallback, View.OnClickListener {
+public class PickerActivity extends Activity implements DataCallback, View.OnClickListener,
+        MyMediaGridAdapter.OnRecyclerViewItemClickListener {
 
     Intent argsIntent;
     RecyclerView recyclerView;
     Button done, category_btn, preview;
-    MediaGridAdapter gridAdapter;
+    MyMediaGridAdapter gridAdapter;
     ListPopupWindow mFolderPopupWindow;
     private FolderAdapter mFolderAdapter;
 
@@ -94,7 +95,8 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
         ArrayList<Media> select = argsIntent.getParcelableArrayListExtra(PickerConfig.DEFAULT_SELECTED_LIST);
         int maxSelect = argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
         long maxSize = argsIntent.getLongExtra(PickerConfig.MAX_SELECT_SIZE, PickerConfig.DEFAULT_SELECTED_MAX_SIZE);
-        gridAdapter = new MediaGridAdapter(medias, this, select, maxSelect, maxSize);
+        gridAdapter = new MyMediaGridAdapter(medias, this, select, maxSelect, maxSize);
+        gridAdapter.setShowCamera(true);
         recyclerView.setAdapter(gridAdapter);
     }
 
@@ -144,7 +146,12 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
     void setView(ArrayList<Folder> list) {
         gridAdapter.updateAdapter(list.get(0).getMedias());
         setButtonText();
-        gridAdapter.setOnItemClickListener(new MediaGridAdapter.OnRecyclerViewItemClickListener() {
+        gridAdapter.setOnItemClickListener(new MyMediaGridAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onCamera() {
+
+            }
+
             @Override
             public void onItemClick(View view, Media data, ArrayList<Media> selectMedias) {
                 setButtonText();
@@ -227,5 +234,15 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
                 done(selects);
             }
         }
+    }
+
+    @Override
+    public void onCamera() {
+
+    }
+
+    @Override
+    public void onItemClick(View view, Media data, ArrayList<Media> selectMedias) {
+
     }
 }

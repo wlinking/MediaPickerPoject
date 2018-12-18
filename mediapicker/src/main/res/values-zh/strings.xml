@@ -17,5 +17,12 @@
     <string name="video">视频</string>
     <string name="cant_play_video">没有可以播放的程序</string>
     <string name="READ_EXTERNAL_STORAGE">需要打开读取存储权限</string>
+
+    <string name="camera_text">拍摄照片</string>
+    <string name="permission_camera_null">缺少相应的权限</string>
+    <string name="permission_photo_null">缺少开启相册的权限</string>
+
+    <string name="all_photo">所有图片</string>
+    <string name="all_media">图片和视频</string>
 </resources>
 
