@@ -7,9 +7,11 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.dmcbig.mediapicker.PickerActivity;
 import com.dmcbig.mediapicker.PickerConfig;
+import com.dmcbig.mediapicker.PreviewActivity;
 import com.dmcbig.mediapicker.TakePhotoActivity;
 import com.dmcbig.mediapicker.adapter.MediaShowGridAdapter;
 import com.dmcbig.mediapicker.adapter.SpacingDecoration;
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPre(int position) {
                 //TODO 预览
+                Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
+                intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 5);
+                intent.putExtra(PickerConfig.PRE_RAW_LIST, select);
+                MainActivity.this.startActivityForResult(intent, 200);
             }
 
             @Override

@@ -2,17 +2,22 @@ package com.dmcbig.mediapicker.adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.dmcbig.mediapicker.PickerConfig;
 import com.dmcbig.mediapicker.R;
 import com.dmcbig.mediapicker.entity.Media;
 import com.dmcbig.mediapicker.utils.FileUtils;
+import com.dmcbig.mediapicker.utils.ScreenUtils;
 
 import java.util.ArrayList;
 
@@ -62,7 +67,15 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
                     .load(mediaUri)
                     .into(((ItemHolder) holder).item);
 
+            if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
+                ((ItemHolder) holder).tvMediaType.setText(context.getResources().getText(R.string.image));
+            }
+            if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+                ((ItemHolder) holder).tvMediaType.setText(context.getResources().getText(R.string.video));
+            }
+            // 文件大小
             ((ItemHolder) holder).textview.setText(fileUtils.getSizeByUnit(medias.get(position).size));
+
         }
     }
 
@@ -84,12 +97,26 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
     class ItemHolder extends RecyclerView.ViewHolder {
 
         ImageView item;
+        ImageView ivDelete;
+        RelativeLayout media_info;
+        TextView tvMediaType;
         TextView textview;
 
-        public ItemHolder(View itemView) {
+        private ItemHolder(View itemView) {
             super(itemView);
             item = (ImageView) itemView.findViewById(R.id.item);
+            ivDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
+            media_info = (RelativeLayout) itemView.findViewById(R.id.media_info);
             textview = (TextView) itemView.findViewById(R.id.textview);
+            tvMediaType = (TextView) itemView.findViewById(R.id.tv_media_type);
+            itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getItemWidth())); //让图片是个正方形
+            ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    medias.remove(getAdapterPosition());
+                    notifyDataSetChanged();
+                }
+            });
             if (onAlbumSelectListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -99,6 +126,10 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
                 });
             }
         }
+    }
+
+    private int getItemWidth() {
+        return (ScreenUtils.getScreenWidth(context) / PickerConfig.GridSpanCount) - PickerConfig.GridSpanCount;
     }
 
     class AddHolder extends RecyclerView.ViewHolder {

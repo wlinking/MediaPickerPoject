@@ -13,6 +13,11 @@ public class Media implements Parcelable {
     public String name;
     public String extension;
     public long time;
+    /**
+     * 多媒体类型，0-NONE，1-IMAGE，2-AUDIO，3-VIDEO，4-PLAYLIST
+     * Constant for the {@link @MediaStore.Files.FileColumns.MEDIA_TYPE} column indicating that file
+     * is not an audio, image, video or playlist file.
+     */
     public int mediaType;
     public long size;
     public int id;
@@ -21,7 +26,7 @@ public class Media implements Parcelable {
     public Media(String path, String name, long time, int mediaType, long size, int id, String parentDir) {
         this.path = path;
         this.name = name;
-        if (!TextUtils.isEmpty(name) && name.indexOf(".") != -1) {
+        if (!TextUtils.isEmpty(name) && name.contains(".")) {
             this.extension = name.substring(name.lastIndexOf("."), name.length());
         } else {
             this.extension = "null";

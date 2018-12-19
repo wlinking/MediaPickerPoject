@@ -15,6 +15,8 @@
     <string name="preview">Prévia</string>
     <string name="select">Selecionar</string>
     <string name="video">vídeo</string>
+    <string name="image">image</string>
+    <string name="gif"> GIF </string>
     <string name="cant_play_video">Nenhum programa para tocar!</string>
     <string name="READ_EXTERNAL_STORAGE">Precisa abrir a permissão de leitura de armazenamento</string>
 </resources>

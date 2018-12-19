@@ -2,6 +2,7 @@ package com.dmcbig.mediapicker.adapter;
 
 import android.content.Context;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -58,6 +59,7 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         public ImageView media_image, check_image;
         public View mask_view;
         public TextView textView_size;
+        public TextView tv_media_type;
         public RelativeLayout gif_info;
         public RelativeLayout video_info;
 
@@ -67,8 +69,8 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
             check_image = (ImageView) view.findViewById(R.id.check_image);
             mask_view = view.findViewById(R.id.mask_view);
             video_info = (RelativeLayout) view.findViewById(R.id.video_info);
-            gif_info = (RelativeLayout) view.findViewById(R.id.gif_info);
             textView_size = (TextView) view.findViewById(R.id.textView_size);
+            tv_media_type = (TextView) view.findViewById(R.id.tv_media_type);
             itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getItemWidth())); //让图片是个正方形
         }
     }
@@ -80,7 +82,7 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         }
     }
 
-    int getItemWidth() {
+    private int getItemWidth() {
         return (ScreenUtils.getScreenWidth(context) / PickerConfig.GridSpanCount) - PickerConfig.GridSpanCount;
     }
 
@@ -109,18 +111,16 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         final Media media = showCamera ? medias.get(position - 1) : medias.get(position);
         Uri mediaUri = Uri.parse("file://" + media.path);
 
-        Glide.with(context)
-                .load(mediaUri)
-                .into(holder.media_image);
+        Glide.with(context).load(mediaUri).into(holder.media_image);
 
-        if (media.mediaType == 3) {
-            holder.gif_info.setVisibility(View.INVISIBLE);
-            holder.video_info.setVisibility(View.VISIBLE);
-            holder.textView_size.setText(fileUtils.getSizeByUnit(media.size));
+        if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
+            holder.tv_media_type.setText(context.getResources().getString(R.string.image));
+        } else if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+            holder.tv_media_type.setText(context.getResources().getString(R.string.video));
         } else {
-            holder.video_info.setVisibility(View.INVISIBLE);
-            holder.gif_info.setVisibility(".gif".equalsIgnoreCase(media.extension) ? View.VISIBLE : View.INVISIBLE);
+            holder.tv_media_type.setText(context.getResources().getString(R.string.gif));
         }
+        holder.textView_size.setText(fileUtils.getSizeByUnit(media.size));
 
         int isSelect = isSelect(media);
         holder.mask_view.setVisibility(isSelect >= 0 ? View.VISIBLE : View.INVISIBLE);
@@ -147,7 +147,6 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
             }
         });
     }
-
 
     public void setSelectMedias(Media media) {
         int index = isSelect(media);

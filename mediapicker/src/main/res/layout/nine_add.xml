@@ -2,5 +2,5 @@
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/small_avatar"
     android:layout_height="@dimen/small_avatar"
+    android:gravity="center"
     android:src="@drawable/add" />
-
