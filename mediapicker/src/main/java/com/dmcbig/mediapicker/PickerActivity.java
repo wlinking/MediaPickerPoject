@@ -163,8 +163,7 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.btn_back) {
-            ArrayList<Media> selectMedias = new ArrayList<>();
-            done(selectMedias);
+            done();
         } else if (id == R.id.category_btn) {
             if (mFolderPopupWindow.isShowing()) {
                 mFolderPopupWindow.dismiss();
@@ -172,7 +171,7 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
                 mFolderPopupWindow.show();
             }
         } else if (id == R.id.done) {
-            done(gridAdapter.getSelectMedias());
+            done();
         } else if (id == R.id.preview) {
             if (gridAdapter.getSelectMedias().size() <= 0) {
                 Toast.makeText(this, getString(R.string.select_null), Toast.LENGTH_SHORT).show();
@@ -185,9 +184,9 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
         }
     }
 
-    public void done(ArrayList<Media> selectList) {
+    public void done() {
         Intent intent = new Intent();
-        intent.putParcelableArrayListExtra(PickerConfig.EXTRA_RESULT, selectList);
+        intent.putParcelableArrayListExtra(PickerConfig.EXTRA_RESULT, gridAdapter.getSelectMedias());
         setResult(PickerConfig.RESULT_CODE, intent);
         finish();
     }
@@ -200,8 +199,7 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
 
     @Override
     public void onBackPressed() {
-        ArrayList<Media> selectMedias = new ArrayList<>();
-        done(selectMedias);
+        done();
         super.onBackPressed();
     }
 
@@ -221,20 +219,12 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 200) {
             final ArrayList<Media> select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    medias.addAll(select);
-                    gridAdapter.updateAdapter(medias);
-                    if (null == selects ) {
-                        selects = new ArrayList<>();
-                    }
-                    selects.addAll(select);
-                    gridAdapter.updateSelectAdapter(selects);
-                    setButtonText();
-                }
-            });
-
+            if (resultCode == PickerConfig.RESULT_UPDATE_CODE) {
+                gridAdapter.updateSelectAdapter(select);
+                setButtonText();
+            } else if (resultCode == PickerConfig.RESULT_CODE) {
+                done();
+            }
         }
     }
 
