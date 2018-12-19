@@ -13,11 +13,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.dmcbig.mediapicker.PickerConfig;
 import com.dmcbig.mediapicker.R;
 import com.dmcbig.mediapicker.entity.Media;
 import com.dmcbig.mediapicker.utils.FileUtils;
-import com.dmcbig.mediapicker.utils.ScreenUtils;
 
 import java.util.ArrayList;
 
@@ -27,16 +25,16 @@ import java.util.ArrayList;
 
 public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    public static final int ITEM_TYPE = 100;
-    public static final int ADD_TYPE = 101;
+    private static final int ITEM_TYPE = 100;
+    private static final int ADD_TYPE = 101;
     private int size;
     private LayoutInflater mInflater;
     private OnRecyclerViewItemClickListener onAlbumSelectListener;
 
-    ArrayList<Media> medias;
-    Context context;
-    FileUtils fileUtils = new FileUtils();
-    int maxSelect;
+    private ArrayList<Media> medias;
+    private Context context;
+    private FileUtils fileUtils = new FileUtils();
+    private int maxSelect;
 
     public MediaShowGridAdapter(ArrayList<Media> list, Context context, int max) {
         this.maxSelect = max;
@@ -94,7 +92,7 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
         return ADD_TYPE;
     }
 
-    class ItemHolder extends RecyclerView.ViewHolder {
+    private class ItemHolder extends RecyclerView.ViewHolder {
 
         ImageView item;
         ImageView ivDelete;
@@ -109,7 +107,7 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
             media_info = (RelativeLayout) itemView.findViewById(R.id.media_info);
             textview = (TextView) itemView.findViewById(R.id.textview);
             tvMediaType = (TextView) itemView.findViewById(R.id.tv_media_type);
-            itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getItemWidth())); //让图片是个正方形
+            itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, size)); //让图片是个正方形
             ivDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -128,12 +126,8 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
         }
     }
 
-    private int getItemWidth() {
-        return (ScreenUtils.getScreenWidth(context) / PickerConfig.GridSpanCount) - PickerConfig.GridSpanCount;
-    }
-
-    class AddHolder extends RecyclerView.ViewHolder {
-        public AddHolder(View itemView) {
+    private class AddHolder extends RecyclerView.ViewHolder {
+        private AddHolder(View itemView) {
             super(itemView);
             if (onAlbumSelectListener != null) {
                 itemView.setOnClickListener(new View.OnClickListener() {

@@ -29,18 +29,18 @@ import java.util.ArrayList;
 
 public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.MyViewHolder> {
 
-    public static final int CAMERA_TYPE = 1000;
-    public static final int ITEM_TYPE = 1001;
+    private static final int CAMERA_TYPE = 1000;
+    private static final int ITEM_TYPE = 1001;
     private int size;
     private boolean showCamera;
     private LayoutInflater mInflater;
     private OnRecyclerViewItemClickListener onAlbumSelectListener;
 
-    ArrayList<Media> medias;
-    Context context;
-    FileUtils fileUtils = new FileUtils();
-    ArrayList<Media> selectMedias = new ArrayList<>();
-    long maxSelect, maxSize;
+    private ArrayList<Media> medias;
+    private Context context;
+    private FileUtils fileUtils = new FileUtils();
+    private ArrayList<Media> selectMedias = new ArrayList<>();
+    private long maxSelect, maxSize;
 
     public MyMediaGridAdapter(ArrayList<Media> list, Context context, ArrayList<Media> select, int max, long maxSize) {
         if (select != null) {
@@ -63,7 +63,7 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         public RelativeLayout gif_info;
         public RelativeLayout video_info;
 
-        public MyViewHolder(View view) {
+        private MyViewHolder(View view) {
             super(view);
             media_image = (ImageView) view.findViewById(R.id.media_image);
             check_image = (ImageView) view.findViewById(R.id.check_image);
@@ -75,8 +75,8 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         }
     }
 
-    class CameraHolder extends MyViewHolder {
-        public CameraHolder(View itemView) {
+    private class CameraHolder extends MyViewHolder {
+        private CameraHolder(View itemView) {
             super(itemView);
             itemView.setLayoutParams(new ViewGroup.LayoutParams(size, size));
         }
@@ -148,7 +148,7 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         });
     }
 
-    public void setSelectMedias(Media media) {
+    private void setSelectMedias(Media media) {
         int index = isSelect(media);
         if (index == -1) {
             selectMedias.add(media);
@@ -158,10 +158,10 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
     }
 
     /**
-     * @param media
+     * @param media media
      * @return 大于等于0 就是表示以选择，返回的是在selectMedias中的下标
      */
-    public int isSelect(Media media) {
+    private int isSelect(Media media) {
         int is = -1;
         if (selectMedias.size() <= 0) {
             return is;
@@ -208,7 +208,7 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
     /**
      * 切换时设置是否显示首格拍照
      *
-     * @param showCamera
+     * @param showCamera boolean
      */
     public void setShowCamera(boolean showCamera) {
         this.showCamera = showCamera;
