@@ -180,7 +180,7 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
             Intent intent = new Intent(this, PreviewActivity.class);
             intent.putExtra(PickerConfig.MAX_SELECT_COUNT, argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT));
             intent.putExtra(PickerConfig.PRE_RAW_LIST, gridAdapter.getSelectMedias());
-            this.startActivityForResult(intent, 200);
+            this.startActivityForResult(intent, PickerConfig.REQUEST_CODE_OK);
         }
     }
 
@@ -217,14 +217,20 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 200) {
-            final ArrayList<Media> select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
+        final ArrayList<Media> select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
+        if (requestCode == PickerConfig.REQUEST_CODE_OK) {
             if (resultCode == PickerConfig.RESULT_UPDATE_CODE) {
                 gridAdapter.updateSelectAdapter(select);
                 setButtonText();
             } else if (resultCode == PickerConfig.RESULT_CODE) {
                 done();
             }
+        } else if (requestCode == PickerConfig.REQUEST_CODE_TAKE) {
+            gridAdapter.getSelectMedias().addAll(select);
+            gridAdapter.getMedias().addAll(select);
+            gridAdapter.notifyDataSetChanged();
+            getMediaData();
+            setButtonText();
         }
     }
 
@@ -232,7 +238,7 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
     public void onCamera() {
         Log.i(TAG, "onCamera: onCamera");
         Intent intent = new Intent(PickerActivity.this, TakePhotoActivity.class);
-        PickerActivity.this.startActivityForResult(intent, 200);
+        PickerActivity.this.startActivityForResult(intent, PickerConfig.REQUEST_CODE_TAKE);
     }
 
     @Override

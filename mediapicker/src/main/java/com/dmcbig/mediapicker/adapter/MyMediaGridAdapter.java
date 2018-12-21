@@ -188,6 +188,10 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         notifyDataSetChanged();
     }
 
+    public ArrayList<Media> getMedias() {
+        return medias;
+    }
+
     public ArrayList<Media> getSelectMedias() {
         return selectMedias;
     }

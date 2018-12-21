@@ -8,18 +8,16 @@ public class PickerConfig {
     public static final String LOG_TAG = "MediaPicker";
 
     /**
-     * 最大图片选择次数，int类型，默认40
+     * 最大图片选择次数，int类型，默认5
      */
     public static final String MAX_SELECT_COUNT = "max_select_count";
-
-    public static final int DEFAULT_SELECTED_MAX_COUNT = 40;
+    public static final int DEFAULT_SELECTED_MAX_COUNT = 5;
 
     /**
      * 最大文件大小，int类型，默认180m
      */
     public static final String MAX_SELECT_SIZE = "max_select_size";
-
-    public static final long DEFAULT_SELECTED_MAX_SIZE = 188743680;
+    public static final long DEFAULT_SELECTED_MAX_SIZE = 180 * 1024 * 1024L;
 
     /**
      * 图片选择模式，默认选视频和图片
@@ -38,6 +36,13 @@ public class PickerConfig {
      * 预览集
      */
     public static final String PRE_RAW_LIST = "pre_raw_List";
+    /**
+     * 预览图片编号
+     */
+    public static final String PRE_IMG_NUM = "pre_img_num";
+
+    public static final int REQUEST_CODE_OK = 200;
+    public static final int REQUEST_CODE_TAKE = 201;
     public static final int RESULT_CODE = 19901026;
     public static final int RESULT_UPDATE_CODE = 1990;
     public static final int PICKER_IMAGE = 100;

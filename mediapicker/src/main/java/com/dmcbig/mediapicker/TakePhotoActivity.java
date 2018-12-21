@@ -61,12 +61,6 @@ public class TakePhotoActivity extends Activity {
         if (requestCode == 100 || requestCode == 101 && resultCode == RESULT_OK && mTmpFile.length() > 0) {
             Media media = new Media(mTmpFile.getPath(), mTmpFile.getName(), 0, 1, mTmpFile.length(), 0, "");
             medias.add(media);
-
-            // 通知系統添加照片
-            Uri localUri = Uri.fromFile(mTmpFile);
-            Intent localIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, localUri);
-            sendBroadcast(localIntent);
-
         }
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(PickerConfig.EXTRA_RESULT, medias);
@@ -85,4 +79,5 @@ public class TakePhotoActivity extends Activity {
                 storageDir      /* directory */
         );
     }
+
 }

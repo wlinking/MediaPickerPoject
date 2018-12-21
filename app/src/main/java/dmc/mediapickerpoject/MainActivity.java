@@ -30,59 +30,63 @@ public class MainActivity extends AppCompatActivity {
         createAdapter();
     }
 
-
     ArrayList<Media> select;
-    long maxSize = 180 * 1024 * 1024L; //文件大小，默认 180MB
-    int maxSelected = 5;
-    int requestCodeOK = 200;
 
     void createAdapter() {
         //创建默认的线性LayoutManager
-        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 5);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(this, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
         recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.addItemDecoration(new SpacingDecoration(5, PickerConfig.GridSpace));
+        recyclerView.addItemDecoration(new SpacingDecoration(PickerConfig.DEFAULT_SELECTED_MAX_COUNT, PickerConfig.GridSpace));
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         recyclerView.setHasFixedSize(true);
         //创建并设置Adapter
         ArrayList<Media> medias = new ArrayList<>();
-        gridAdapter = new MediaShowGridAdapter(medias, this, maxSelected);
+        gridAdapter = new MediaShowGridAdapter(medias, this, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
         recyclerView.setAdapter(gridAdapter);
         gridAdapter.setOnAlbumSelectListener(new MediaShowGridAdapter.OnRecyclerViewItemClickListener() {
             @Override
             public void onPre(int position) {
-                //TODO 预览
                 Intent intent = new Intent(MainActivity.this, PreviewActivity.class);
-                intent.putExtra(PickerConfig.MAX_SELECT_COUNT, 5);
+                intent.putExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
                 intent.putExtra(PickerConfig.PRE_RAW_LIST, select);
                 intent.putExtra(PickerConfig.PRE_IMG_NUM, position);
-                MainActivity.this.startActivityForResult(intent, 200);
+                MainActivity.this.startActivityForResult(intent, PickerConfig.REQUEST_CODE_OK);
             }
 
             @Override
             public void onInsert(int other) {
-                go();
+                toPickMedias();
             }
         });
     }
 
-    void go() {
+    /**
+     * 开始选择 media
+     */
+    void toPickMedias() {
 
         Intent intent = new Intent(MainActivity.this, PickerActivity.class);
-        intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE_VIDEO);//选择类型 image and video
+        intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE_VIDEO);
 
-        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, maxSize); // 文件大小，默认 180MB
-        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, maxSelected);  // 默认 选择数
-        intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST, select); // 默认选中参数
-        MainActivity.this.startActivityForResult(intent, requestCodeOK);
+        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, PickerConfig.DEFAULT_SELECTED_MAX_SIZE);
+        intent.putExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
+        intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST, select);
+        MainActivity.this.startActivityForResult(intent, PickerConfig.REQUEST_CODE_OK);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 200 && resultCode == PickerConfig.RESULT_CODE) {
+        if (requestCode == PickerConfig.REQUEST_CODE_OK) {
+
             select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
             Log.i("select", "select.size" + select.size());
-            gridAdapter.updateAdapter(select);
+            if (resultCode == PickerConfig.RESULT_CODE) {
+                gridAdapter.updateAdapter(select);
+            }/* 暂时只 点完成 按钮才更新gridAdapter的select
+             else if (resultCode == PickerConfig.RESULT_UPDATE_CODE) {
+                gridAdapter.updateAdapter(select);
+            }*/
         }
     }
 }
