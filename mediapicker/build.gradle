@@ -11,7 +11,7 @@ version = "3.3" //发布版本号
 group = "com.dmcBig" //最终引用形式，如compile 'com.**;
 android {
     compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    buildToolsVersion "25.0.3"
 
     defaultConfig {
         minSdkVersion 16

@@ -1,5 +1,4 @@
 <resources>
-    <string name="library_name">MediaPicker</string>
     <string name="all_dir_name">Imágenes y Videos</string>
     <string name="all_video">Videos</string>
     <string name="all_image">Imágenes</string>

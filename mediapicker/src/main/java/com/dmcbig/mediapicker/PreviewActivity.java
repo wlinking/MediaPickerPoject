@@ -70,7 +70,7 @@ public class PreviewActivity extends FragmentActivity implements View.OnClickLis
         AdapterFragment adapterFragment = new AdapterFragment(getSupportFragmentManager(), fragmentArrayList);
         viewpager.setAdapter(adapterFragment);
         viewpager.setCurrentItem(position, true);
-        viewpager.addOnPageChangeListener(this);
+        viewpager.setOnPageChangeListener(this);
     }
 
     @SuppressLint("SetTextI18n")

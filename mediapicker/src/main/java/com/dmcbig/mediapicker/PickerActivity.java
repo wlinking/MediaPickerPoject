@@ -74,7 +74,6 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
         getMediaData();
     }
 
-
     public void setTitleBar() {
         int type = argsIntent.getIntExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE_VIDEO);
         if (type == PickerConfig.PICKER_IMAGE_VIDEO) {

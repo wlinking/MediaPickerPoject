@@ -34,7 +34,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class PreviewFragment extends Fragment {
     private PhotoView mPhotoView;
     ImageView play_view;
- //   private PhotoViewAttacher mAttacher;
+    //   private PhotoViewAttacher mAttacher;
 
     public static PreviewFragment newInstance(Media media, String label) {
         PreviewFragment f = new PreviewFragment();
@@ -65,7 +65,7 @@ public class PreviewFragment extends Fragment {
         mPhotoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {
-                PreviewActivity previewActivity=  (PreviewActivity)getActivity();
+                PreviewActivity previewActivity = (PreviewActivity) getActivity();
                 previewActivity.setBarStatus();
             }
         });
@@ -84,21 +84,21 @@ public class PreviewFragment extends Fragment {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setDataAndType(getUri(media.path), "video/*");
                     intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                    if (isIntentAvailable(getContext(), intent)) {
+                    if (isIntentAvailable(getActivity(), intent)) {
                         startActivity(intent);
                     } else {
-                        Toast.makeText(getContext(),getString(R.string.cant_play_video), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), getString(R.string.cant_play_video), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
         }
     }
 
-    Uri getUri(String path){
+    Uri getUri(String path) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-          return   FileProvider.getUriForFile(getActivity(), getActivity().getPackageName()+ ".dmc", new File(path));
-        }else {
-          return Uri.fromFile(new File(path));
+            return FileProvider.getUriForFile(getActivity(), getActivity().getPackageName() + ".dmc", new File(path));
+        } else {
+            return Uri.fromFile(new File(path));
         }
     }
 

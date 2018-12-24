@@ -2,6 +2,7 @@ package com.dmcbig.mediapicker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,7 +32,7 @@ public class TakePhotoActivity extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         try {
             mTmpFile = createImageFile();
@@ -62,6 +63,7 @@ public class TakePhotoActivity extends Activity {
             Media media = new Media(mTmpFile.getPath(), mTmpFile.getName(), 0, 1, mTmpFile.length(), 0, "");
             medias.add(media);
         }
+
         Intent intent = new Intent();
         intent.putParcelableArrayListExtra(PickerConfig.EXTRA_RESULT, medias);
         setResult(PickerConfig.RESULT_CODE, intent);
