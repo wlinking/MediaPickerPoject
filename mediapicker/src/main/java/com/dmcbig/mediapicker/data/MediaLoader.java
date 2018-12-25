@@ -4,7 +4,6 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -48,7 +47,7 @@ public class MediaLoader extends LoaderM implements LoaderManager.LoaderCallback
                 + MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 
         Uri queryUri = MediaStore.Files.getContentUri("external");
-        CursorLoader cursorLoader = new CursorLoader(
+        return new CursorLoader(
                 mContext,
                 queryUri,
                 MEDIA_PROJECTION,
@@ -56,7 +55,6 @@ public class MediaLoader extends LoaderM implements LoaderManager.LoaderCallback
                 null, // Selection args (none).
                 MediaStore.Files.FileColumns.DATE_ADDED + " DESC" // Sort order.
         );
-        return cursorLoader;
     }
 
     @Override
@@ -77,7 +75,7 @@ public class MediaLoader extends LoaderM implements LoaderManager.LoaderCallback
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID));
 
                 if (size < 1) continue;
-                if(path == null || path.equals("")) continue;
+                if (path == null || path.equals("")) continue;
                 String dirName = getParent(path);
                 Media media = new Media(path, name, dateTime, mediaType, size, id, dirName);
                 allFolder.addMedias(media);

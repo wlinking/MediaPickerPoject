@@ -7,7 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.dmcbig.mediapicker.PickerActivity;
+import com.dmcbig.mediapicker.PickerAndTakerActivity;
 import com.dmcbig.mediapicker.PickerConfig;
 import com.dmcbig.mediapicker.PreviewActivity;
 import com.dmcbig.mediapicker.adapter.MediaShowGridAdapter;
@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
      */
     void toPickMedias() {
 
-        Intent intent = new Intent(MainActivity.this, PickerActivity.class);
+        Intent intent = new Intent(MainActivity.this, PickerAndTakerActivity.class);
         intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE_VIDEO);
 
         intent.putExtra(PickerConfig.MAX_SELECT_SIZE, PickerConfig.DEFAULT_SELECTED_MAX_SIZE);
