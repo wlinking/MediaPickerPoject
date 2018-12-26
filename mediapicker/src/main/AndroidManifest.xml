@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.dmcbig.mediapicker">
+    package="com.linking.mediapicker">
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -20,22 +20,22 @@
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:name="com.dmcbig.mediapicker.PickerActivity" />-->
+            android:name="com.linking.mediapicker.PickerActivity" />-->
         <activity
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:name="com.dmcbig.mediapicker.PickerAndTakerActivity" />
+            android:name="com.linking.mediapicker.PickerAndTakerActivity" />
         <activity
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:name="com.dmcbig.mediapicker.PreviewActivity" />
+            android:name="com.linking.mediapicker.PreviewActivity" />
         <activity
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateAlwaysHidden"
             android:theme="@style/Theme.AppCompat.NoActionBar"
-            android:name="com.dmcbig.mediapicker.TakePhotoActivity" />
+            android:name="com.linking.mediapicker.TakePhotoActivity" />
     </application>
 
 </manifest>
