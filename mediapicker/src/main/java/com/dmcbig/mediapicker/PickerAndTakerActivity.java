@@ -8,13 +8,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -32,7 +31,6 @@ import com.dmcbig.mediapicker.data.VideoLoader;
 import com.dmcbig.mediapicker.entity.Folder;
 import com.dmcbig.mediapicker.entity.Media;
 import com.dmcbig.mediapicker.utils.ScreenUtils;
-import com.hyf.takephotovideolib.record.RecordVideoUtils;
 import com.hyf.takephotovideolib.support.TakePhotoVideoHelper;
 
 import java.io.File;
@@ -40,10 +38,6 @@ import java.util.ArrayList;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.EasyPermissions;
-import top.zibin.luban.CompressionPredicate;
-import top.zibin.luban.Luban;
-import top.zibin.luban.OnCompressListener;
-import top.zibin.luban.OnRenameListener;
 
 
 /**
@@ -160,7 +154,13 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
 
     void setView(ArrayList<Folder> list) {
         medias = list.get(0).getMedias();
+        ArrayList<Media> selectMedias = gridAdapter.getSelectMedias();
+        for (Media media : selectMedias) {
+            if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
+                medias.add(0, media);
+        }
         gridAdapter.updateAdapter(medias);
+        gridAdapter.updateSelectAdapter(gridAdapter.getSelectMedias());
         setButtonText();
         gridAdapter.setOnAlbumSelectListener(this);
     }
@@ -190,7 +190,8 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
                 return;
             }
             Intent intent = new Intent(this, PreviewActivity.class);
-            intent.putExtra(PickerConfig.MAX_SELECT_COUNT, argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT));
+            intent.putExtra(PickerConfig.MAX_SELECT_COUNT, argsIntent.getIntExtra(
+                    PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT));
             intent.putExtra(PickerConfig.PRE_RAW_LIST, gridAdapter.getSelectMedias());
             this.startActivityForResult(intent, PickerConfig.REQUEST_CODE_OK);
         }
@@ -229,14 +230,15 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (null == data) return;
         final ArrayList<Media> select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
         if (requestCode == PickerConfig.REQUEST_CODE_OK) {
-            if (resultCode == PickerConfig.RESULT_UPDATE_CODE) {
-                gridAdapter.updateSelectAdapter(select);
-                setButtonText();
-            } else if (resultCode == PickerConfig.RESULT_CODE) {
-                done();
-            }
+//            if (resultCode == PickerConfig.RESULT_UPDATE_CODE) {
+            gridAdapter.updateSelectAdapter(select);
+            setButtonText();
+//            } else if (resultCode == PickerConfig.RESULT_CODE) {
+//                done();
+//            }
         } else if (requestCode == RC_OPEN_TAKE_PHOTO_VIDEO && resultCode == RESULT_OK) {
             String path = data.getStringExtra(TakePhotoVideoHelper.RESULT_DATA);
             final File photo = new File(path);
@@ -248,7 +250,7 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
                     mediaType, photo.length(), 0, "");
             gridAdapter.getSelectMedias().add(media);
             ArrayList<Media> listMedia = gridAdapter.getMedias();
-            listMedia.add(0, media);
+            listMedia.add(0, media); //错误所在，直接add不行，需要定位
             gridAdapter.updateAdapter(listMedia);
             setButtonText();
         }

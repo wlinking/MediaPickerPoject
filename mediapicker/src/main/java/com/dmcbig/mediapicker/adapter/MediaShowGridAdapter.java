@@ -65,11 +65,15 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
                     .load(mediaUri)
                     .into(((ItemHolder) holder).item);
 
+            // 图片
             if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
-                ((ItemHolder) holder).tvMediaType.setText(context.getResources().getText(R.string.image));
+                ((ItemHolder) holder).tvMediaType.setVisibility(View.GONE);
+                ((ItemHolder) holder).ivMask.setVisibility(View.GONE);
             }
+            // 视频
             if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-                ((ItemHolder) holder).tvMediaType.setText(context.getResources().getText(R.string.video));
+                ((ItemHolder) holder).tvMediaType.setVisibility(View.VISIBLE);
+                ((ItemHolder) holder).ivMask.setVisibility(View.VISIBLE);
             }
             // 文件大小
             ((ItemHolder) holder).textview.setText(fileUtils.getSizeByUnit(medias.get(position).size));
@@ -97,7 +101,8 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
         ImageView item;
         ImageView ivDelete;
         RelativeLayout media_info;
-        TextView tvMediaType;
+        ImageView tvMediaType;
+        ImageView ivMask;
         TextView textview;
 
         private ItemHolder(View itemView) {
@@ -106,7 +111,8 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
             ivDelete = (ImageView) itemView.findViewById(R.id.iv_delete);
             media_info = (RelativeLayout) itemView.findViewById(R.id.media_info);
             textview = (TextView) itemView.findViewById(R.id.textview);
-            tvMediaType = (TextView) itemView.findViewById(R.id.tv_media_type);
+            ivMask = (ImageView) itemView.findViewById(R.id.iv_mask);
+            tvMediaType = (ImageView) itemView.findViewById(R.id.tv_media_type);
             itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, size)); //让图片是个正方形
             ivDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -71,13 +71,13 @@ public class PreviewActivity extends FragmentActivity implements View.OnClickLis
         viewpager.setAdapter(adapterFragment);
         viewpager.setCurrentItem(position, true);
         viewpager.setOnPageChangeListener(this);
+
     }
 
     @SuppressLint("SetTextI18n")
     void setDoneView(int num1) {
         done.setText(getString(R.string.done) + "(" + num1 + "/" + getIntent().getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT) + ")");
     }
-
 
     @Override
     public void onClick(View v) {
@@ -137,13 +137,11 @@ public class PreviewActivity extends FragmentActivity implements View.OnClickLis
         }
     }
 
-
     @Override
     public void onBackPressed() {
         done(selects, PickerConfig.RESULT_UPDATE_CODE);
         super.onBackPressed();
     }
-
 
     public class AdapterFragment extends FragmentStatePagerAdapter {
         private List<Fragment> mFragments;

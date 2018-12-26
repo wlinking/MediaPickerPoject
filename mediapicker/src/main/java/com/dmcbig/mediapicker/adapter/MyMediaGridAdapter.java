@@ -54,23 +54,23 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         size = context.getResources().getDisplayMetrics().widthPixels / 3;
     }
 
-
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public ImageView media_image, check_image;
+        public ImageView media_image, check_image, iv_mask;
         public View mask_view;
         public TextView textView_size;
-        public TextView tv_media_type;
+        public ImageView iv_media_type;
         public RelativeLayout gif_info;
         public RelativeLayout video_info;
 
         private MyViewHolder(View view) {
             super(view);
             media_image = (ImageView) view.findViewById(R.id.media_image);
+            iv_mask = (ImageView) view.findViewById(R.id.iv_mask);
             check_image = (ImageView) view.findViewById(R.id.check_image);
             mask_view = view.findViewById(R.id.mask_view);
             video_info = (RelativeLayout) view.findViewById(R.id.video_info);
             textView_size = (TextView) view.findViewById(R.id.textView_size);
-            tv_media_type = (TextView) view.findViewById(R.id.tv_media_type);
+            iv_media_type = (ImageView) view.findViewById(R.id.iv_media_type);
             itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getItemWidth())); //让图片是个正方形
         }
     }
@@ -113,12 +113,9 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
 
         Glide.with(context).load(mediaUri).into(holder.media_image);
 
-        if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_IMAGE) {
-            holder.tv_media_type.setText(context.getResources().getString(R.string.image));
-        } else if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-            holder.tv_media_type.setText(context.getResources().getString(R.string.video));
-        } else {
-            holder.tv_media_type.setText(context.getResources().getString(R.string.gif));
+        if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
+            holder.iv_media_type.setVisibility(View.VISIBLE);
+            holder.iv_mask.setVisibility(View.VISIBLE);
         }
         holder.textView_size.setText(fileUtils.getSizeByUnit(media.size));
 

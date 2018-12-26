@@ -26,6 +26,14 @@
         android:layout_marginTop="5.5dp"
         android:src="@drawable/btn_unselected" />
 
+    <ImageView
+        android:id="@+id/iv_mask"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:src="@drawable/video"
+        android:visibility="gone" />
+
     <RelativeLayout
         android:id="@+id/video_info"
         android:layout_width="match_parent"
@@ -44,6 +52,17 @@
             android:text=""
             android:textColor="@android:color/white"
             android:textSize="12sp" />
+
+        <ImageView
+            android:id="@+id/iv_media_type"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/video_camera"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/textView_size"
