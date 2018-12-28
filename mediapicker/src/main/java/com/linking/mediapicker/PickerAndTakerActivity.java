@@ -253,7 +253,7 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
             String path = data.getStringExtra(TakePhotoVideoHelper.RESULT_DATA);
             final File photo = new File(path);
             int mediaType = 3; //video
-            if (path.contains(".jpg")) {
+            if (path.contains(".jpg")||path.contains(".jpeg")||path.contains(".png")) {
                 mediaType = 1; //image
             }
             final Media media = new Media(photo.getPath(), photo.getName(), System.currentTimeMillis(),
