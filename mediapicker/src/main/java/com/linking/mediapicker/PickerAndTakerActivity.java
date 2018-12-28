@@ -154,15 +154,25 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
 
     void setView(ArrayList<Folder> list) {
         medias = list.get(0).getMedias();
+        // TODO 重新拍的视频加入selector，需在TakePhotoVideoLib 将 video保存到内存中才彻底解决
         ArrayList<Media> selectMedias = gridAdapter.getSelectMedias();
         for (Media media : selectMedias) {
-            if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO)
+            if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO && !isDuplicated(medias, media))
                 medias.add(0, media);
         }
         gridAdapter.updateAdapter(medias);
         gridAdapter.updateSelectAdapter(gridAdapter.getSelectMedias());
         setButtonText();
         gridAdapter.setOnAlbumSelectListener(this);
+    }
+
+    // 判断已经包含，因为 TakePhotoVideoLib 未将 video保存到内存中
+    private boolean isDuplicated(ArrayList<Media> medias, Media media) {
+        for (Media me : medias) {
+            if (me.path.equals(media.path))
+                return true;
+        }
+        return false;
     }
 
     void setButtonText() {

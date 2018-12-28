@@ -1,6 +1,11 @@
 # MediaPickerProject
 
-仿微信视频图片选择器。
+仿微信视频图片、视频选择器，同时可直接拍摄照片、视频。
+
+
+项目fork自[DmcSDK/MediaPickerPoject](https://github.com/DmcSDK/MediaPickerPoject)，感谢作者。
+
+并结合了[TakePhotoVideoLib](https://github.com/HyfSunshine/TakePhotoVideoLib)，同样感谢作者。
 
 
 ## 使用
@@ -31,9 +36,6 @@ dependencies {
 
 
 
-[Cordova版](https://github.com/DmcSDK/cordova-plugin-mediaPicker) : https://github.com/DmcSDK/cordova-plugin-mediaPicker 
-
-[IOS版](https://github.com/DmcSDK/IOSMediaPicker) : https://github.com/DmcSDK/IOSMediaPicker
 
 # Screenshots
 ![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/Screenshots1.png)
