@@ -4,7 +4,6 @@ import android.app.LoaderManager;
 import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
-import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,7 +40,7 @@ public class ImageLoader extends LoaderM implements LoaderManager.LoaderCallback
     @Override
     public Loader onCreateLoader(int picker_type, Bundle bundle) {
         Uri queryUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-        CursorLoader cursorLoader = new CursorLoader(
+        return new CursorLoader(
                 mContext,
                 queryUri,
                 IMAGE_PROJECTION,
@@ -49,7 +48,6 @@ public class ImageLoader extends LoaderM implements LoaderManager.LoaderCallback
                 null, // Selection args (none).
                 MediaStore.Images.Media.DATE_ADDED + " DESC" // Sort order.
         );
-        return cursorLoader;
     }
 
     @Override
@@ -69,7 +67,7 @@ public class ImageLoader extends LoaderM implements LoaderManager.LoaderCallback
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID));
 
                 if (size < 1) continue;
-                if(path == null || path.equals("")) continue;
+                if (path == null || path.equals("")) continue;
                 String dirName = getParent(path);
                 Media media = new Media(path, name, dateTime, mediaType, size, id, dirName);
                 allFolder.addMedias(media);

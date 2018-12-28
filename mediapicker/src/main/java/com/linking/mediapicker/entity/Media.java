@@ -15,7 +15,7 @@ public class Media implements Parcelable {
     public long time;
     /**
      * 多媒体类型，0-NONE，1-IMAGE，2-AUDIO，3-VIDEO，4-PLAYLIST
-     * Constant for the {@link @MediaStore.Files.FileColumns.MEDIA_TYPE} column indicating that file
+     * Constant for the MediaStore.Files.FileColumns.MEDIA_TYPE column indicating that file
      * is not an audio, image, video or playlist file.
      */
     public int mediaType;

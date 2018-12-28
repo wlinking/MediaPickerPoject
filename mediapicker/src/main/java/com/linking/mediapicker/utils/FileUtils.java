@@ -173,6 +173,9 @@ public class FileUtils {
     /**
      * To find out the extension of required object in given uri
      * Solution by http://stackoverflow.com/a/36514823/1171484
+     * @param context context
+     * @param uri uri
+     * @return String
      */
     public static String getMimeType(Context context, Uri uri) {
         String extension;

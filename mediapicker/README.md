@@ -1,56 +1,14 @@
-apply plugin: 'com.android.library'
 
-android {
-    compileSdkVersion 25
-    buildToolsVersion '27.0.3'
+# 简介
 
-    defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 25
-        versionCode 1
-        versionName "3.3"
+拍摄视频、图片，同时可选择两种多媒体形式
 
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        ndk {
-            //APP的build.gradle设置支持的SO库架构，过滤大so文件
-            //abiFilters 'armeabi', 'armeabi-v7a', 'x86'
-            abiFilters 'armeabi'
-        }
 
-    }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
-}
+# Library 上传 jcenter 仓库
 
-allprojects {
-    repositories {
-        jcenter()
-        maven {
-            url "https://jitpack.io"
-        }
-    }
-}
+1.具体配置请查看此library下[build.gradle](build.gradle)
 
-dependencies {
-    api fileTree(include: ['*.jar'], dir: 'libs')
-    api 'com.android.support:appcompat-v7:25.3.1'
-    testImplementation 'junit:junit:4.12'
-    api 'com.android.support:recyclerview-v7:25.3.1'
-    api 'com.github.bumptech.glide:glide:4.0.0'
-    api 'com.android.support:support-v4:25.3.1'
-
-    annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
-    api 'pub.devrel:easypermissions:1.0.0'
-    api 'com.github.chrisbanes.photoview:library:1.2.4'
-
-    //TakePhotoVideoLib
-    api 'com.github.HyfSunshine:TakePhotoVideoLib:0.0.7'
-}
-
+```
 
 /** 以下开始是将Android Library上传到jcenter的相关配置**/
 
@@ -173,5 +131,24 @@ bintray {
     }
     configurations = ['archives']
 }
+```
 
+2.上传命令
 
+进入terminal，首先确保gradlew具有执行权限，没有的话执行
+
+```
+chmod +x ./gradlew
+```
+
+开始安装
+
+```
+gradlew install
+```
+
+开始上传
+
+```
+gradlew bintrayUpload
+```
