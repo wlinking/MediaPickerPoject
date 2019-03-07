@@ -37,11 +37,21 @@ chmod +x ./gradlew
 
 ```
 Execution failed for task ':mediapicker:bintrayUpload'.
-> Could not upload to 'https://api.bintray.com/content/linking123w/MediaPicker/MediaPicker/1.0/com/linking123w/mediapicker/1.0/mediapicker-1.0-javadoc.jar': HTTP/1.1 409 Conflict [message:Unable to upload files: An artifact with the path 'com/linking123w/mediapicker/1.0/mediapicker-1.0-javadoc.jar' already exists]
+> Could not upload to 'https://api.bintray.com/content/linking123w/MediaPicker/
+MediaPicker/1.0/com/linking123w/mediapicker/1.0/mediapicker-1.0-javadoc.jar': 
+HTTP/1.1 409 Conflict [message:Unable to upload files: An artifact with the path
+ 'com/linking123w/mediapicker/1.0/mediapicker-1.0-javadoc.jar' already exists]
 ```
 
 - 解决
 
 ```
 代表文件已经存在了，把版本号改一下 再上传
+
+# 69行
+version = "1.0.x"
+# 167行
+name = '1.0.x'
+# 可能 170行
+vcsTag = 'v1.0'
 ```
