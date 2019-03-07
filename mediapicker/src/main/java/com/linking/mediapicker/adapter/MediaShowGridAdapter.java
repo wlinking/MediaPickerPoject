@@ -30,6 +30,7 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
     private int size;
     private LayoutInflater mInflater;
     private OnRecyclerViewItemClickListener onAlbumSelectListener;
+    private UpdateFileSizeListener updateFileSizeListener;
 
     private ArrayList<Media> medias;
     private Context context;
@@ -54,7 +55,7 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof ItemHolder) {
 
@@ -77,6 +78,28 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
             }
             // 文件大小
             ((ItemHolder) holder).textview.setText(fileUtils.getSizeByUnit(medias.get(position).size));
+
+            ((ItemHolder) holder).ivDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (updateFileSizeListener != null) {
+                        updateFileSizeListener.delete(getItemFileSize(position));
+                    }
+
+                    medias.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
+
+            ((ItemHolder) holder).item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onAlbumSelectListener != null) {
+                        onAlbumSelectListener.onPre(position);
+                    }
+                }
+            });
 
         }
     }
@@ -113,36 +136,22 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
             textview = (TextView) itemView.findViewById(R.id.textview);
             ivMask = (ImageView) itemView.findViewById(R.id.iv_mask);
             tvMediaType = (ImageView) itemView.findViewById(R.id.tv_media_type);
-            itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, size)); //让图片是个正方形
-            ivDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    medias.remove(getAdapterPosition());
-                    notifyDataSetChanged();
-                }
-            });
-            if (onAlbumSelectListener != null) {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onAlbumSelectListener.onPre(getAdapterPosition());
-                    }
-                });
-            }
+            itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, size));
         }
     }
 
     private class AddHolder extends RecyclerView.ViewHolder {
-        private AddHolder(View itemView) {
+        private AddHolder(final View itemView) {
             super(itemView);
-            if (onAlbumSelectListener != null) {
-                itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (onAlbumSelectListener != null) {
                         onAlbumSelectListener.onInsert(maxSelect - medias.size());
                     }
-                });
-            }
+                }
+            });
         }
     }
 
@@ -161,6 +170,21 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
         void onPre(int position);
 
         void onInsert(int other);
+    }
+
+    private double getItemFileSize(int position) {
+        double itemFileSize = 0.0;
+        if (medias.get(position) != null)
+            itemFileSize = medias.get(position).size;
+        return itemFileSize;
+    }
+
+    public void setUpdateFileSizeListener(UpdateFileSizeListener updateFileSizeListener) {
+        this.updateFileSizeListener = updateFileSizeListener;
+    }
+
+    public interface UpdateFileSizeListener {
+        void delete(double size);
     }
 
 }

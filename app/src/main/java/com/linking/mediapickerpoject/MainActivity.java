@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.linking.mediapicker.PickerAndTakerActivity;
 import com.linking.mediapicker.PickerConfig;
@@ -14,20 +15,30 @@ import com.linking.mediapicker.adapter.MediaShowGridAdapter;
 import com.linking.mediapicker.adapter.SpacingDecoration;
 import com.linking.mediapicker.entity.Media;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MediaShowGridAdapter.UpdateFileSizeListener {
 
     RecyclerView recyclerView;
     MediaShowGridAdapter gridAdapter;
+
+    private TextView mFileSize;
+    private double defaultFileSize = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
+        initView();
         createAdapter();
+    }
+
+    private void initView() {
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+        mFileSize = (TextView) findViewById(R.id.tv_file_size);
     }
 
     ArrayList<Media> select;
@@ -58,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 toPickMedias();
             }
         });
+        gridAdapter.setUpdateFileSizeListener(this);
     }
 
     /**
@@ -83,10 +95,39 @@ public class MainActivity extends AppCompatActivity {
             Log.i("select", "select.size" + select.size());
             if (resultCode == PickerConfig.RESULT_CODE) {
                 gridAdapter.updateAdapter(select);
+                updateFileLimitSize(select);
             }/* 暂时只 点完成 按钮才更新gridAdapter的select
              else if (resultCode == PickerConfig.RESULT_UPDATE_CODE) {
                 gridAdapter.updateAdapter(select);
             }*/
         }
     }
+
+    @Override
+    public void delete(double size) {
+        updateFileLimitSizeText(size, false);
+    }
+
+    private void updateFileLimitSize(List<Media> selectMediaList) {
+        long allSize = 0;
+        for (Media media : selectMediaList) {
+            allSize += media.size;
+        }
+
+        updateFileLimitSizeText(allSize, true);
+    }
+
+    private void updateFileLimitSizeText(double size, boolean isAdd) {
+        if (isAdd) {
+            defaultFileSize = size / 1024.0 / 1024.0;
+        } else {
+            defaultFileSize = defaultFileSize - size / 1024.0 / 1024.0;
+            defaultFileSize = defaultFileSize > 0 ? defaultFileSize : 0.0;
+        }
+
+        BigDecimal bd = new BigDecimal(defaultFileSize);
+        Double size2Scale = bd.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        mFileSize.setText(String.valueOf(size2Scale));
+    }
+
 }
