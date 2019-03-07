@@ -42,19 +42,19 @@ dependencies {
 <div align="center">
 
 <img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S1.jpg" 
-height="468" width="216" >
+height="585" width="270" >
 <img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S2.jpg" 
-height="468" width="216" >
+height="585" width="270" >
 <img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S3.jpg" 
-height="468" width="216" >
+height="585" width="270" >
 
 </div>
 
 <div align="center">
 
 <img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S4.jpg" 
-height="468" width="216" >
+height="585" width="270" >
 <img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S5.jpg" 
-height="468" width="216" >
+height="585" width="270" >
 
 </div>
