@@ -38,9 +38,9 @@ dependencies {
 
 
 # Screenshots
-![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S1.jpg)
-![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S2.jpg)
-![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S3.jpg)
-![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S4.jpg)
-![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S5.jpg)
+![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S1.jpg)
+![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S2.jpg)
+![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S3.jpg)
+![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S4.jpg)
+![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S5.jpg)
 
