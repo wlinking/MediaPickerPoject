@@ -38,9 +38,23 @@ dependencies {
 
 
 # Screenshots
-![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S1.jpg)
-![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S2.jpg)
-![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S3.jpg)
-![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S4.jpg)
-![](https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S5.jpg)
 
+<div align="center">
+
+<img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S1.jpg" 
+height="468" width="216" >
+<img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S2.jpg" 
+height="468" width="216" >
+<img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S3.jpg" 
+height="468" width="216" >
+
+</div>
+
+<div align="center">
+
+<img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S4.jpg" 
+height="468" width="216" >
+<img src="https://github.com/wlinking/MediaPickerPoject/blob/master/Screenshots/S5.jpg" 
+height="468" width="216" >
+
+</div>
