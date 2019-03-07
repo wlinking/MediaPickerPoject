@@ -1,6 +1,6 @@
 # MediaPickerProject
 
-仿微信视频图片、视频选择器，同时可直接拍摄照片、视频。
+仿微信视频图片、视频混合选择器，同时可直接拍摄照片、视频。
 
 
 项目fork自[DmcSDK/MediaPickerPoject](https://github.com/DmcSDK/MediaPickerPoject)，感谢作者。
@@ -25,7 +25,7 @@ allprojects {
 
 dependencies {
     //多媒体选择器
-    implementation('com.linking123w:mediapicker:1.0') {
+    implementation('com.linking123w:mediapicker:1.0.x') {
         // 附赠：去除 glide 重复引用报错
         exclude group: 'com.github.bumptech.glide'
     }
@@ -38,5 +38,9 @@ dependencies {
 
 
 # Screenshots
-![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/Screenshots1.png)
+![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S1.jpg)
+![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S2.jpg)
+![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S3.jpg)
+![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S4.jpg)
+![](https://github.com/dmcBig/MediaPickerPoject/blob/master/Screenshots/S5.jpg)
 
