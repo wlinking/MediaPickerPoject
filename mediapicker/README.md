@@ -20,13 +20,13 @@ chmod +x ./gradlew
 开始安装
 
 ```
-gradlew install
+./gradlew install
 ```
 
 开始上传
 
 ```
-gradlew bintrayUpload
+./gradlew bintrayUpload
 ```
 
 # 错误记录
