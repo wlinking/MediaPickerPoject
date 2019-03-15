@@ -9,7 +9,21 @@
 1.具体配置请查看此library下[build.gradle](build.gradle)
 
 
-2.上传命令
+2.上传
+
+
+2.1 版本号
+
+```
+# 69行
+version = "1.0.x"
+# 167行
+name = '1.0.x'
+# 可能 170行
+vcsTag = 'v1.0'
+```
+
+2.2 命令
 
 进入terminal，首先确保gradlew具有执行权限，没有的话执行
 
