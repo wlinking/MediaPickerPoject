@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -48,7 +49,9 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ADD_TYPE) {
-            return new AddHolder(mInflater.inflate(R.layout.nine_add, parent, false));
+            View addHoldeView = mInflater.inflate(R.layout.nine_add, parent, false);
+            addHoldeView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
+            return new AddHolder(addHoldeView);
         } else {
             return new ItemHolder(mInflater.inflate(R.layout.media_pre, parent, false));
         }
