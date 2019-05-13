@@ -10,8 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +36,6 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
 
     private ArrayList<Media> medias;
     private Context context;
-    private FileUtils fileUtils = new FileUtils();
     private ArrayList<Media> selectMedias = new ArrayList<>();
     private long maxSelect, maxSize;
 
@@ -57,10 +54,6 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView media_image, check_image, iv_mask;
         public View mask_view;
-        public TextView textView_size;
-        public ImageView iv_media_type;
-        public RelativeLayout gif_info;
-        public RelativeLayout video_info;
 
         private MyViewHolder(View view) {
             super(view);
@@ -68,9 +61,6 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
             iv_mask = (ImageView) view.findViewById(R.id.iv_mask);
             check_image = (ImageView) view.findViewById(R.id.check_image);
             mask_view = view.findViewById(R.id.mask_view);
-            video_info = (RelativeLayout) view.findViewById(R.id.video_info);
-            textView_size = (TextView) view.findViewById(R.id.textView_size);
-            iv_media_type = (ImageView) view.findViewById(R.id.iv_media_type);
             itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getItemWidth())); //让图片是个正方形
         }
     }
@@ -114,10 +104,8 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         Glide.with(context).load(mediaUri).into(holder.media_image);
 
         if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-            holder.iv_media_type.setVisibility(View.VISIBLE);
             holder.iv_mask.setVisibility(View.VISIBLE);
         }
-        holder.textView_size.setText(fileUtils.getSizeByUnit(media.size));
 
         int isSelect = isSelect(media);
         holder.mask_view.setVisibility(isSelect >= 0 ? View.VISIBLE : View.INVISIBLE);
