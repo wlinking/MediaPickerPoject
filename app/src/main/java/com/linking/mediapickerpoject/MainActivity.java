@@ -96,10 +96,7 @@ public class MainActivity extends AppCompatActivity implements MediaShowGridAdap
             if (resultCode == PickerConfig.RESULT_CODE) {
                 gridAdapter.updateAdapter(select);
                 updateFileLimitSize(select);
-            }/* 暂时只 点完成 按钮才更新gridAdapter的select
-             else if (resultCode == PickerConfig.RESULT_UPDATE_CODE) {
-                gridAdapter.updateAdapter(select);
-            }*/
+            }
         }
     }
 
