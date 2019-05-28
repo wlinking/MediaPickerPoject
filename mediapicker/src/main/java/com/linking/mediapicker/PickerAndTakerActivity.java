@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.hyf.takephotovideolib.support.TakePhotoVideoHelper;
 import com.linking.mediapicker.adapter.FolderAdapter;
 import com.linking.mediapicker.adapter.MyMediaGridAdapter;
 import com.linking.mediapicker.adapter.SpacingDecoration;
@@ -31,7 +32,6 @@ import com.linking.mediapicker.data.VideoLoader;
 import com.linking.mediapicker.entity.Folder;
 import com.linking.mediapicker.entity.Media;
 import com.linking.mediapicker.utils.ScreenUtils;
-import com.hyf.takephotovideolib.support.TakePhotoVideoHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -103,8 +103,8 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
         medias = new ArrayList<>();
         selects = argsIntent.getParcelableArrayListExtra(PickerConfig.DEFAULT_SELECTED_LIST);
         int maxSelect = argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
-        long maxSize = argsIntent.getLongExtra(PickerConfig.MAX_SELECT_SIZE, PickerConfig.DEFAULT_SELECTED_MAX_SIZE);
-        gridAdapter = new MyMediaGridAdapter(medias, this, selects, maxSelect, maxSize);
+        int maxTime = argsIntent.getIntExtra(PickerConfig.MAX_VIDEO_TIME, PickerConfig.DEFAULT_VIDEO_TIME);
+        gridAdapter = new MyMediaGridAdapter(medias, this, selects, maxSelect, maxTime);
         gridAdapter.setShowCamera(true);
         recyclerView.setAdapter(gridAdapter);
     }
@@ -253,7 +253,7 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
             String path = data.getStringExtra(TakePhotoVideoHelper.RESULT_DATA);
             final File photo = new File(path);
             int mediaType = 3; //video
-            if (path.contains(".jpg")||path.contains(".jpeg")||path.contains(".png")) {
+            if (path.contains(".jpg") || path.contains(".jpeg") || path.contains(".png")) {
                 mediaType = 1; //image
             }
             final Media media = new Media(photo.getPath(), photo.getName(), System.currentTimeMillis(),
