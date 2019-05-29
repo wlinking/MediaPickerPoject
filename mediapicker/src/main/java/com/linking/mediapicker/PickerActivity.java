@@ -96,8 +96,8 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
         medias = new ArrayList<>();
         selects = argsIntent.getParcelableArrayListExtra(PickerConfig.DEFAULT_SELECTED_LIST);
         int maxSelect = argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
-        long maxSize = argsIntent.getLongExtra(PickerConfig.MAX_SELECT_SIZE, PickerConfig.DEFAULT_SELECTED_MAX_SIZE);
-        gridAdapter = new MyMediaGridAdapter(medias, this, selects, maxSelect, maxSize);
+        int maxTime = argsIntent.getIntExtra(PickerConfig.MAX_VIDEO_TIME, PickerConfig.DEFAULT_VIDEO_TIME);
+        gridAdapter = new MyMediaGridAdapter(medias, this, selects, maxSelect, maxTime);
         gridAdapter.setShowCamera(true);
         recyclerView.setAdapter(gridAdapter);
     }

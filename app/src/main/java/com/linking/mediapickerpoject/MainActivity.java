@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements MediaShowGridAdap
         Intent intent = new Intent(MainActivity.this, PickerAndTakerActivity.class);
         intent.putExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE_VIDEO);
 
-        intent.putExtra(PickerConfig.MAX_SELECT_SIZE, PickerConfig.DEFAULT_SELECTED_MAX_SIZE);
+        intent.putExtra(PickerConfig.MAX_VIDEO_TIME, PickerConfig.DEFAULT_VIDEO_TIME);
         intent.putExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
         intent.putExtra(PickerConfig.DEFAULT_SELECTED_LIST, select);
         MainActivity.this.startActivityForResult(intent, PickerConfig.REQUEST_CODE_OK);

@@ -37,14 +37,15 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
     private ArrayList<Media> medias;
     private Context context;
     private ArrayList<Media> selectMedias = new ArrayList<>();
-    private long maxSelect, maxSize;
+    private long maxSelect;
+    private int maxTime;
 
-    public MyMediaGridAdapter(ArrayList<Media> list, Context context, ArrayList<Media> select, int max, long maxSize) {
+    public MyMediaGridAdapter(ArrayList<Media> list, Context context, ArrayList<Media> select, int max, int maxTime) {
         if (select != null) {
             this.selectMedias = select;
         }
         this.maxSelect = max;
-        this.maxSize = maxSize;
+        this.maxTime = maxTime;
         this.medias = list;
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
@@ -111,17 +112,16 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         holder.mask_view.setVisibility(isSelect >= 0 ? View.VISIBLE : View.INVISIBLE);
         holder.check_image.setImageDrawable(isSelect >= 0 ? ContextCompat.getDrawable(context, R.drawable.btn_selected) : ContextCompat.getDrawable(context, R.drawable.btn_unselected));
 
-
         holder.media_image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 int isSelect = isSelect(media);
                 if (selectMedias.size() >= maxSelect && isSelect < 0) {
                     Toast.makeText(context, context.getString(R.string.msg_amount_limit), Toast.LENGTH_SHORT).show();
                 } else {
-                    if (media.size > maxSize) {
-                        Toast.makeText(context, context.getString(R.string.msg_size_limit) + (FileUtils.fileSize(maxSize)), Toast.LENGTH_LONG).show();
+                    if (media.mediaType == 3 && FileUtils.getVideoTime(media.path) > maxTime) {
+                        String hintStr = context.getString(R.string.msg_size_limit) + maxTime + "秒";
+                        Toast.makeText(context, hintStr, Toast.LENGTH_LONG).show();
                     } else {
                         holder.mask_view.setVisibility(isSelect >= 0 ? View.INVISIBLE : View.VISIBLE);
                         holder.check_image.setImageDrawable(isSelect >= 0 ? ContextCompat.getDrawable(context, R.drawable.btn_unselected) : ContextCompat.getDrawable(context, R.drawable.btn_selected));

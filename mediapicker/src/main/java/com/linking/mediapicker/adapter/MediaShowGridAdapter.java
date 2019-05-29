@@ -52,7 +52,10 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
         if (viewType == ADD_TYPE) {
             View addHoldeView = mInflater.inflate(R.layout.nine_add, parent, false);
             addHoldeView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
-            addHoldeView.setPadding(0,5,0,5);
+            addHoldeView.setPadding(ScreenUtils.dp2px(context,5),
+                    ScreenUtils.dp2px(context,5),
+                    ScreenUtils.dp2px(context,5),
+                    ScreenUtils.dp2px(context,5));
             return new AddHolder(addHoldeView);
         } else {
             return new ItemHolder(mInflater.inflate(R.layout.media_pre, parent, false));

@@ -4,6 +4,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -11,6 +13,7 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -59,7 +62,7 @@ public class FileUtils {
         return getCacheDirectory(context, true);
     }
 
-    public static String getRealPathFromURI(Context context,Uri contentURI) {
+    public static String getRealPathFromURI(Context context, Uri contentURI) {
         String result;
         Cursor cursor = context.getContentResolver().query(contentURI, null, null, null, null);
         if (cursor == null) { // Source is Dropbox or other similar local file path
@@ -173,8 +176,9 @@ public class FileUtils {
     /**
      * To find out the extension of required object in given uri
      * Solution by http://stackoverflow.com/a/36514823/1171484
+     *
      * @param context context
-     * @param uri uri
+     * @param uri     uri
      * @return String
      */
     public static String getMimeType(Context context, Uri uri) {
@@ -200,5 +204,30 @@ public class FileUtils {
 
     public static String getMimeTypeByFileName(String fileName) {
         return fileName.substring(fileName.lastIndexOf("."), fileName.length());
+    }
+
+    /**
+     * 获取视频文件时长
+     *
+     * @param videoPath 文件地址
+     * @return 文件时长
+     */
+    public static int getVideoTime(String videoPath) {
+        MediaMetadataRetriever media = new MediaMetadataRetriever();
+        media.setDataSource(videoPath);
+
+        String s = media.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        int videoLength = 0;
+        try {
+            int i = Integer.parseInt(s);
+            videoLength = i / 1000;
+            if (i % 1000 != 0) {
+                videoLength++;
+            }
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        media.release();
+        return videoLength > 1 ? videoLength - 1 : videoLength;
     }
 }
