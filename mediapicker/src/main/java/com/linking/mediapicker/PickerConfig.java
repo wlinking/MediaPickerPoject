@@ -14,10 +14,16 @@ public class PickerConfig {
     public static final int DEFAULT_SELECTED_MAX_COUNT = 5;
 
     /**
-     * 单个视频最大时长, int类型，默认15s
+     * 单个视频最大时长, int类型，默认10s
      */
     public static final String MAX_VIDEO_TIME = "max_video_time";
-    public static final int DEFAULT_VIDEO_TIME = 15;
+    public static final int DEFAULT_VIDEO_TIME = 10;
+
+    /**
+     * 单个视频最大大小, long类型，默认50M
+     */
+    public static final String MAX_MEDIA_SIZE = "max_media_size";
+    public static final int DEFAULT_MEDIA_SIZE = 52428800;
 
     /**
      * 图片选择模式，默认选视频和图片
