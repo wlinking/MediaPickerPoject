@@ -97,7 +97,8 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
         selects = argsIntent.getParcelableArrayListExtra(PickerConfig.DEFAULT_SELECTED_LIST);
         int maxSelect = argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
         int maxTime = argsIntent.getIntExtra(PickerConfig.MAX_VIDEO_TIME, PickerConfig.DEFAULT_VIDEO_TIME);
-        gridAdapter = new MyMediaGridAdapter(medias, this, selects, maxSelect, maxTime);
+        long maxSingleSize = argsIntent.getIntExtra(PickerConfig.MAX_MEDIA_SIZE, PickerConfig.DEFAULT_MEDIA_SIZE);
+        gridAdapter = new MyMediaGridAdapter(medias, this, selects, maxSelect, maxTime, maxSingleSize);
         gridAdapter.setShowCamera(true);
         recyclerView.setAdapter(gridAdapter);
     }
@@ -154,8 +155,10 @@ public class PickerActivity extends Activity implements DataCallback, View.OnCli
 
     void setButtonText() {
         int max = argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
-        done.setText(getString(R.string.done) + "(" + gridAdapter.getSelectMedias().size() + "/" + max + ")");
-        preview.setText(getString(R.string.preview) + "(" + gridAdapter.getSelectMedias().size() + ")");
+        String doneStr = getString(R.string.done) + "(" + gridAdapter.getSelectMedias().size() + "/" + max + ")";
+        done.setText(doneStr);
+        String previewStr = getString(R.string.preview) + "(" + gridAdapter.getSelectMedias().size() + ")";
+        preview.setText(previewStr);
     }
 
     @Override

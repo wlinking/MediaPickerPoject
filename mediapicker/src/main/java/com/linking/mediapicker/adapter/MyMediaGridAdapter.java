@@ -37,15 +37,17 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
     private ArrayList<Media> medias;
     private Context context;
     private ArrayList<Media> selectMedias = new ArrayList<>();
-    private long maxSelect;
+    private long maxSelect, maxSize;
     private int maxTime;
 
-    public MyMediaGridAdapter(ArrayList<Media> list, Context context, ArrayList<Media> select, int max, int maxTime) {
+    public MyMediaGridAdapter(ArrayList<Media> list, Context context, ArrayList<Media> select,
+                              int max, int maxTime, long maxSize) {
         if (select != null) {
             this.selectMedias = select;
         }
         this.maxSelect = max;
         this.maxTime = maxTime;
+        this.maxSize = maxSize;
         this.medias = list;
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
@@ -119,6 +121,11 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
                 if (selectMedias.size() >= maxSelect && isSelect < 0) {
                     Toast.makeText(context, context.getString(R.string.msg_amount_limit), Toast.LENGTH_SHORT).show();
                 } else {
+                    if(media.size > maxSize){
+                        String sizeHint = "请勿上传超过" + FileUtils.fileSize(maxSize) + "的文件哦";
+                        Toast.makeText(context, sizeHint, Toast.LENGTH_LONG).show();
+                        return;
+                    }
                     if (media.mediaType == 3 && FileUtils.getVideoTime(media.path) > maxTime) {
                         String hintStr = context.getString(R.string.msg_size_limit) + maxTime + "秒";
                         Toast.makeText(context, hintStr, Toast.LENGTH_LONG).show();
