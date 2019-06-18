@@ -48,8 +48,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class PickerAndTakerActivity extends Activity implements DataCallback, View.OnClickListener,
         MyMediaGridAdapter.OnRecyclerViewItemClickListener {
 
-    public static final String TAG = PickerAndTakerActivity.class.getSimpleName();
-
     ArrayList<Media> medias;
     ArrayList<Media> selects;
     Intent argsIntent;
@@ -92,6 +90,8 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
         }
     }
 
+    private static int singleMaxTime = 0;
+
     void createAdapter() {
         //创建默认的线性LayoutManager
         GridLayoutManager mLayoutManager = new GridLayoutManager(this, PickerConfig.GridSpanCount);
@@ -103,9 +103,9 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
         medias = new ArrayList<>();
         selects = argsIntent.getParcelableArrayListExtra(PickerConfig.DEFAULT_SELECTED_LIST);
         int maxSelect = argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
-        int maxTime = argsIntent.getIntExtra(PickerConfig.MAX_VIDEO_TIME, PickerConfig.DEFAULT_VIDEO_TIME);
+        singleMaxTime = argsIntent.getIntExtra(PickerConfig.MAX_VIDEO_TIME, PickerConfig.DEFAULT_VIDEO_TIME);
         long maxSingleSize = argsIntent.getIntExtra(PickerConfig.MAX_MEDIA_SIZE, PickerConfig.DEFAULT_MEDIA_SIZE);
-        gridAdapter = new MyMediaGridAdapter(medias, this, selects, maxSelect, maxTime, maxSingleSize);
+        gridAdapter = new MyMediaGridAdapter(medias, this, selects, maxSelect, singleMaxTime, maxSingleSize);
         gridAdapter.setShowCamera(true);
         recyclerView.setAdapter(gridAdapter);
     }
@@ -178,8 +178,10 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
 
     void setButtonText() {
         int max = argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
-        done.setText(getString(R.string.done) + "(" + gridAdapter.getSelectMedias().size() + "/" + max + ")");
-        preview.setText(getString(R.string.preview) + "(" + gridAdapter.getSelectMedias().size() + ")");
+        String doneStr = getString(R.string.done) + "(" + gridAdapter.getSelectMedias().size() + "/" + max + ")";
+        done.setText(doneStr);
+        String previewStr = getString(R.string.preview) + "(" + gridAdapter.getSelectMedias().size() + ")";
+        preview.setText(previewStr);
     }
 
     @Override
@@ -244,12 +246,8 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
         if (null == data) return;
         final ArrayList<Media> select = data.getParcelableArrayListExtra(PickerConfig.EXTRA_RESULT);
         if (requestCode == PickerConfig.REQUEST_CODE_OK) {
-//            if (resultCode == PickerConfig.RESULT_UPDATE_CODE) {
             gridAdapter.updateSelectAdapter(select);
             setButtonText();
-//            } else if (resultCode == PickerConfig.RESULT_CODE) {
-//                done();
-//            }
         } else if (requestCode == RC_OPEN_TAKE_PHOTO_VIDEO && resultCode == RESULT_OK) {
             String path = data.getStringExtra(TakePhotoVideoHelper.RESULT_DATA);
             final File photo = new File(path);
@@ -284,13 +282,12 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
 
     private static final int requestCode = 113;
     private static final int RC_OPEN_TAKE_PHOTO_VIDEO = 100;
-    private static final int Video_Duration = 15000;
-
 
     @AfterPermissionGranted(requestCode)
     private void startRecordPhotoVideo() {
         if (EasyPermissions.hasPermissions(this, permission))
-            TakePhotoVideoHelper.startTakePhotoVideo(this, RC_OPEN_TAKE_PHOTO_VIDEO, savePath, Video_Duration);
+            TakePhotoVideoHelper.startTakePhotoVideo(this, RC_OPEN_TAKE_PHOTO_VIDEO, savePath,
+                    singleMaxTime == 0 ? 10000 : singleMaxTime * 1000);
         else
             EasyPermissions.requestPermissions(this, "申请获取相关权限", requestCode, permission);
     }
