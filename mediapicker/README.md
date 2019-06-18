@@ -43,6 +43,13 @@ chmod +x ./gradlew
 ./gradlew bintrayUpload
 ```
 
+2.3 查看更新
+
+上 [bintray.com](https://bintray.com)登陆账号查看是否已更新
+
+稍等一会，延时比较严重，过了一会去看，已上传
+
+
 # 错误记录
 
 ## 版本冲突，已上传
