@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -18,6 +20,7 @@ import com.linking.mediapicker.R;
 import com.linking.mediapicker.entity.Media;
 import com.linking.mediapicker.utils.FileUtils;
 import com.linking.mediapicker.utils.ScreenUtils;
+import com.linking.mediapicker.utils.TimerUtils;
 
 import java.util.ArrayList;
 
@@ -55,15 +58,19 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public ImageView media_image, check_image, iv_mask;
+        public ImageView media_image, check_image;
         public View mask_view;
+        public TextView tv_time;
+        public RelativeLayout video_info;
 
         private MyViewHolder(View view) {
             super(view);
             media_image = (ImageView) view.findViewById(R.id.media_image);
-            iv_mask = (ImageView) view.findViewById(R.id.iv_mask);
+//            iv_mask = (ImageView) view.findViewById(R.id.iv_mask);
             check_image = (ImageView) view.findViewById(R.id.check_image);
             mask_view = view.findViewById(R.id.mask_view);
+            video_info = (RelativeLayout) view.findViewById(R.id.video_info);
+            tv_time = (TextView) view.findViewById(R.id.tv_time);
             itemView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getItemWidth())); //让图片是个正方形
         }
     }
@@ -107,7 +114,10 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
         Glide.with(context).load(mediaUri).into(holder.media_image);
 
         if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO) {
-            holder.iv_mask.setVisibility(View.VISIBLE);
+            holder.video_info.setVisibility(View.VISIBLE);
+            holder.tv_time.setText(TimerUtils.getTime(FileUtils.getVideoTime(media.path)));
+        } else {
+            holder.video_info.setVisibility(View.GONE);
         }
 
         int isSelect = isSelect(media);
@@ -121,7 +131,7 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
                 if (selectMedias.size() >= maxSelect && isSelect < 0) {
                     Toast.makeText(context, context.getString(R.string.msg_amount_limit), Toast.LENGTH_SHORT).show();
                 } else {
-                    if(media.size > maxSize){
+                    if (media.size > maxSize) {
                         String sizeHint = "请勿上传超过" + FileUtils.fileSize(maxSize) + "的文件哦";
                         Toast.makeText(context, sizeHint, Toast.LENGTH_LONG).show();
                         return;
