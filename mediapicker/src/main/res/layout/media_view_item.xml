@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/media_image"
@@ -26,12 +27,37 @@
         android:layout_marginTop="5.5dp"
         android:src="@drawable/btn_unselected" />
 
-    <ImageView
-        android:id="@+id/iv_mask"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_gravity="center"
-        android:src="@drawable/video"
-        android:visibility="gone" />
+    <RelativeLayout
+        android:id="@+id/video_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        android:background="#8e000000">
+
+        <ImageView
+            android:id="@+id/iv_media_type"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/video_camera"/>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="3dp"
+            android:layout_marginEnd="6dp"
+            android:layout_marginRight="6dp"
+            android:layout_marginTop="3dp"
+            tools:text="0:13"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+    </RelativeLayout>
 
 </FrameLayout>

@@ -147,7 +147,7 @@ public class FileUtils {
 
     private static final long MB = 1024 * 1024;
 
-    public String getSizeByUnit(double size) {
+    public static String getSizeByUnit(double size) {
 
         if (size == 0) {
             return "0K";
