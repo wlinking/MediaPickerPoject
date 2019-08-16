@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements MediaShowGridAdap
         recyclerView.setHasFixedSize(true);
         //创建并设置Adapter
         ArrayList<Media> medias = new ArrayList<>();
-        gridAdapter = new MediaShowGridAdapter(medias, this, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
+        gridAdapter = new MediaShowGridAdapter(medias, this, PickerConfig.DEFAULT_SELECTED_MAX_COUNT, PickerConfig.DEFAULT_ADD_ICO);
         recyclerView.setAdapter(gridAdapter);
         gridAdapter.setOnAlbumSelectListener(new MediaShowGridAdapter.OnRecyclerViewItemClickListener() {
             @Override

@@ -31,6 +31,11 @@ public class PickerConfig {
     public static final String SELECT_MODE = "select_mode";
 
     /**
+     * 新增图片的默认样式
+     */
+    public static final int DEFAULT_ADD_ICO = 0;
+
+    /**
      * 选择结果，返回为 ArrayList&lt;String&gt; 图片路径集合
      */
     public static final String EXTRA_RESULT = "select_result";

@@ -34,16 +34,18 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
     private ArrayList<Media> medias;
     private Context context;
     private int maxSelect;
+    private int addIco;
 
-    public MediaShowGridAdapter(ArrayList<Media> list, Context context, int max) {
+    public MediaShowGridAdapter(ArrayList<Media> list, Context context, int max, int addIco) {
         this.maxSelect = max;
+        this.addIco = addIco == 0 ? R.drawable.add : addIco;
         this.medias = list;
         this.context = context;
         this.mInflater = LayoutInflater.from(context);
         //给出最低宽度，30为控件两端边距
-        int width = (ScreenUtils.getScreenWidth(context) - ScreenUtils.dp2px(context,30))
-                < ScreenUtils.dp2px(context,320) ? ScreenUtils.dp2px(context,320)
-                : ScreenUtils.getScreenWidth(context) - ScreenUtils.dp2px(context,30);
+        int width = (ScreenUtils.getScreenWidth(context) - ScreenUtils.dp2px(context, 30))
+                < ScreenUtils.dp2px(context, 320) ? ScreenUtils.dp2px(context, 320)
+                : ScreenUtils.getScreenWidth(context) - ScreenUtils.dp2px(context, 30);
         size = width / 5;
     }
 
@@ -51,11 +53,12 @@ public class MediaShowGridAdapter extends RecyclerView.Adapter<RecyclerView.View
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if (viewType == ADD_TYPE) {
             View addHoldeView = mInflater.inflate(R.layout.nine_add, parent, false);
+            addHoldeView.findViewById(R.id.iv_add).setBackgroundResource(addIco);
             addHoldeView.setLayoutParams(new LinearLayout.LayoutParams(size, size));
-            addHoldeView.setPadding(ScreenUtils.dp2px(context,5),
-                    ScreenUtils.dp2px(context,5),
-                    ScreenUtils.dp2px(context,5),
-                    ScreenUtils.dp2px(context,5));
+            addHoldeView.setPadding(ScreenUtils.dp2px(context, 5),
+                    ScreenUtils.dp2px(context, 5),
+                    ScreenUtils.dp2px(context, 5),
+                    ScreenUtils.dp2px(context, 5));
             return new AddHolder(addHoldeView);
         } else {
             return new ItemHolder(mInflater.inflate(R.layout.media_pre, parent, false));
