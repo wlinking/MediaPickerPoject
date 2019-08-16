@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iv_add"
     android:layout_width="@dimen/small_avatar"
     android:layout_height="@dimen/small_avatar"
     android:gravity="center"
-    android:padding="5dp"
-    android:src="@drawable/add" />
+    android:padding="5dp" />
