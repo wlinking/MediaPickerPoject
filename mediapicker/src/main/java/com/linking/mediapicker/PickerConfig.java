@@ -8,7 +8,7 @@ public class PickerConfig {
     public static final String LOG_TAG = "MediaPicker";
 
     /**
-     * 最大图片选择次数，int类型，默认5
+     * 最大图片选择数，int类型，默认5
      */
     public static final String MAX_SELECT_COUNT = "max_select_count";
     public static final int DEFAULT_SELECTED_MAX_COUNT = 5;

@@ -45,12 +45,12 @@ public class MainActivity extends AppCompatActivity implements MediaShowGridAdap
 
     void createAdapter() {
         //创建默认的线性LayoutManager
-        GridLayoutManager mLayoutManager = new GridLayoutManager(this, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(this, 5);//此处将屏幕宽度分为5分，可调整，但不是选择的文件数量
         recyclerView.setLayoutManager(mLayoutManager);
+        //创建过程中有3处DEFAULT_SELECTED_MAX_COUNT，表明选择的文件数量，可统一设置
         recyclerView.addItemDecoration(new SpacingDecoration(PickerConfig.DEFAULT_SELECTED_MAX_COUNT, PickerConfig.GridSpace));
         //如果可以确定每个item的高度是固定的，设置这个选项可以提高性能
         recyclerView.setHasFixedSize(true);
-        //创建并设置Adapter
         ArrayList<Media> medias = new ArrayList<>();
         gridAdapter = new MediaShowGridAdapter(medias, this, PickerConfig.DEFAULT_SELECTED_MAX_COUNT, PickerConfig.DEFAULT_ADD_ICO);
         recyclerView.setAdapter(gridAdapter);
