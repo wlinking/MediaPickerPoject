@@ -14,6 +14,11 @@ public class PickerConfig {
     public static final int DEFAULT_SELECTED_MAX_COUNT = 5;
 
     /**
+     * 屏幕横向分割数，默认5
+     */
+    public static final int DEFAULT_SCREEN_SPLIT_COUNT = 5;
+
+    /**
      * 单个视频最大时长, int类型，默认10s
      */
     public static final String MAX_VIDEO_TIME = "max_video_time";
