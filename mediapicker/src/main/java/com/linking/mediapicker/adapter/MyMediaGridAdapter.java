@@ -102,7 +102,7 @@ public class MyMediaGridAdapter extends RecyclerView.Adapter<MyMediaGridAdapter.
             ((CameraHolder) holder).itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    onAlbumSelectListener.onCamera();
+                    if (null != onAlbumSelectListener) onAlbumSelectListener.onCamera();
                 }
             });
             return;
