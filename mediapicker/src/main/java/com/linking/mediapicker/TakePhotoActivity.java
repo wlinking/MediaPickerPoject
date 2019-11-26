@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
+import com.hyf.takephotovideolib.support.TakePhotoVideoHelper;
 import com.linking.mediapicker.entity.Media;
 
 import java.io.File;
@@ -57,15 +58,18 @@ public class TakePhotoActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        ArrayList<Media> medias = new ArrayList<>();
-        if (requestCode == 100 || requestCode == 101 && resultCode == RESULT_OK && mTmpFile.length() > 0) {
-            Media media = new Media(mTmpFile.getPath(), mTmpFile.getName(), 0, 1, mTmpFile.length(), 0, "");
-            medias.add(media);
-        }
+        if (0 != resultCode) {//过滤未拍照返回情况
+            ArrayList<Media> medias = new ArrayList<>();
+            if (requestCode == 100 || requestCode == 101 && resultCode == RESULT_OK && mTmpFile.length() > 0) {
+                Media media = new Media(mTmpFile.getPath(), mTmpFile.getName(), 0, 1, mTmpFile.length(), 0, "");
+                medias.add(media);
+            }
 
-        Intent intent = new Intent();
-        intent.putParcelableArrayListExtra(PickerConfig.EXTRA_RESULT, medias);
-        setResult(PickerConfig.RESULT_CODE, intent);
+            Intent intent = new Intent();
+            intent.putParcelableArrayListExtra(PickerConfig.EXTRA_RESULT, medias);
+            intent.putExtra(TakePhotoVideoHelper.RESULT_DATA, medias.get(medias.size() - 1).path);
+            setResult(PickerConfig.RESULT_CODE, intent);
+        }
         finish();
     }
 
