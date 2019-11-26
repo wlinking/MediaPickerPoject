@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Environment;
@@ -13,7 +12,6 @@ import android.text.TextUtils;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.Locale;
@@ -54,7 +52,7 @@ public class FileUtils {
      * Android defines cache directory on device's file system.
      *
      * @param context Application context
-     * @return Cache {@link File directory}.<br />
+     * @return Cache {@link File directory}.
      * <b>NOTE:</b> Can be null in some unpredictable cases (if SD card is unmounted and
      * {@link Context#getCacheDir() Context.getCacheDir()} returns null).
      */
