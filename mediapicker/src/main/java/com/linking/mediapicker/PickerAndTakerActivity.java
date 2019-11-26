@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -158,7 +157,7 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
         // TODO 重新拍的视频加入selector，需在TakePhotoVideoLib 将 video保存到内存中才彻底解决
         ArrayList<Media> selectMedias = gridAdapter.getSelectMedias();
         for (Media media : selectMedias) {
-            if (media.mediaType == MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO && !isDuplicated(medias, media))
+            if (!isDuplicated(medias, media))
                 medias.add(0, media);
         }
         gridAdapter.updateAdapter(medias);
@@ -262,13 +261,38 @@ public class PickerAndTakerActivity extends Activity implements DataCallback, Vi
             listMedia.add(0, media); //错误所在，直接add不行，需要定位
             gridAdapter.updateAdapter(listMedia);
             setButtonText();
+        } else if (requestCode == PickerConfig.REQUEST_CODE_TAKE && PickerConfig.RESULT_CODE == resultCode) {
+            String path = data.getStringExtra(TakePhotoVideoHelper.RESULT_DATA);
+            final File photo = new File(path);
+            int mediaType = 3; //video
+            if (path.contains(".jpg") || path.contains(".jpeg") || path.contains(".png")) {
+                mediaType = 1; //image
+            }
+            final Media media = new Media(photo.getPath(), photo.getName(), System.currentTimeMillis(),
+                    mediaType, photo.length(), 0, "");
+            gridAdapter.getSelectMedias().add(media);
+            ArrayList<Media> listMedia = gridAdapter.getMedias();
+            listMedia.add(0, media); //错误所在，直接add不行，需要定位
+            gridAdapter.updateAdapter(listMedia);
+            setButtonText();
         }
     }
 
     @Override
     public void onCamera() {
-        // 拍照+录像
-        startRecordPhotoVideo();
+        int max = argsIntent.getIntExtra(PickerConfig.MAX_SELECT_COUNT, PickerConfig.DEFAULT_SELECTED_MAX_COUNT);
+        if (gridAdapter.getSelectMedias().size() >= max) {
+            Toast.makeText(this, R.string.msg_amount_limit, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int type = argsIntent.getIntExtra(PickerConfig.SELECT_MODE, PickerConfig.PICKER_IMAGE_VIDEO);
+        if (type == PickerConfig.PICKER_IMAGE) {
+            Intent intent = new Intent(this, TakePhotoActivity.class);
+            startActivityForResult(intent, PickerConfig.REQUEST_CODE_TAKE);
+        } else {
+            // 拍照+录像
+            startRecordPhotoVideo();
+        }
     }
 
     @Override
